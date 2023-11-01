@@ -1,0 +1,17 @@
+filebeat.inputs:
+- type: container
+  paths:
+    - '/var/lib/docker/containers/*/*.log'
+  processors:
+    - drop_event:
+        when:
+          or:
+            - contains:
+                container.name: "es01"
+            - contains:
+                container.name: "kibana"
+            - contains:
+                container.name: "logstash"
+
+output.logstash:  
+   hosts: ["logstash:5044"]
